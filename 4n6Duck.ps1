@@ -49,41 +49,46 @@ Start-Process powershell.exe -Verb RunAs -ArgumentList @(
   '-NoProfile','-ExecutionPolicy','Bypass','-Command',
   "New-Item -Path 'C:\Users\Public\evtx' -ItemType Directory -Force; Copy-Item 'C:\Windows\System32\winevt\Logs\*.evtx' -Destination 'C:\Users\Public\evtx' -Force -ErrorAction SilentlyContinue"
 )}
-#allow things in public for defender
-Add-MpPreference -ExclusionPath "C:\Users\public"
+ # Run with elevation and add exclusion
+Start-Process powershell.exe -Verb RunAs -ArgumentList '-Command "Add-MpPreference -ExclusionPath ''C:\Users\Public''"'
+
 function chainsaw_the_village {
     $ErrorActionPreference = 'Stop'
     try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
 
     $url   = 'https://github.com/WithSecureLabs/chainsaw/releases/latest/download/chainsaw_all_platforms+rules.zip'
     $zip   = 'C:\Users\Public\chainsaw.zip'
-    $base  = 'C:\Users\Public\chainsaw'        # where the bundle extracts
-    $evtx  = 'C:\Users\Public\evtx'            # your logs (no trailing slash)
-    $out   = 'C:\Users\Public\4n6Duck\chainsaw'        # keep your original output dir
+    $base  = 'C:\Users\Public\chainsaw'
+    $evtx  = 'C:\Users\Public\evtx'
+    $out   = 'C:\Users\Public\4n6Duck\chainsaw'
 
-    # --- download (blocks until complete) ---
     if (Get-Command Start-BitsTransfer -ErrorAction SilentlyContinue) {
         Start-BitsTransfer -Source $url -Destination $zip -Priority Foreground
     } else {
         Invoke-WebRequest -Uri $url -OutFile $zip -UseBasicParsing
     }
 
-    # --- ensure the zip is fully written/unlocked before expanding ---
     $deadline = (Get-Date).AddMinutes(5)
     $stable = 0; $lastSize = -1
     while ((Get-Date) -lt $deadline -and $stable -lt 4) {
         Start-Sleep -Milliseconds 500
         if (-not (Test-Path $zip)) { continue }
         $size = (Get-Item $zip -ErrorAction SilentlyContinue).Length
-        try { $fs=[IO.File]::Open($zip,'Open','Read','None');$fs.Close(); if ($size -gt 0 -and $size -eq $lastSize){$stable++} else {$stable=0}; $lastSize=$size } catch { $stable = 0 }
+        try {
+            $fs=[IO.File]::Open($zip,'Open','Read','None');$fs.Close()
+            if ($size -gt 0 -and $size -eq $lastSize) {
+                $stable++
+            } else {
+                $stable=0
+            }
+            $lastSize=$size
+        } catch { $stable = 0 }
     }
     if (-not (Test-Path $zip)) { throw "Download failed: $zip not found." }
 
-    # --- unzip + cleanup ---
     Expand-Archive -LiteralPath $zip -DestinationPath 'C:\Users\Public' -Force
     Remove-Item $zip -Force
 
-    # --- find exe (prefer your original path) ---
     $exe = Join-Path $base 'chainsaw_x86_64-pc-windows-msvc.exe'
     if (-not (Test-Path $exe)) {
         $found = Get-ChildItem $base -Recurse -File -Filter 'chainsaw*.exe' | Select-Object -First 1
@@ -92,7 +97,6 @@ function chainsaw_the_village {
     }
     Unblock-File -Path $exe -ErrorAction SilentlyContinue
 
-    # --- build rule/mapping paths relative to the exe dir ---
     $root  = Split-Path $exe
     $map   = Join-Path $root 'mappings\sigma-event-logs-all.yml'
     $rules = Join-Path $root 'rules'
@@ -100,7 +104,6 @@ function chainsaw_the_village {
 
     foreach ($p in @($map,$rules,$sigma)) { if (-not (Test-Path $p)) { throw "Missing required path: $p" } }
 
-    # --- run chainsaw (avoid NativeCommandError by redirecting stderr/stdout) ---
     $stdout = Join-Path $out 'chainsaw.stdout.txt'
     $stderr = Join-Path $out 'chainsaw.stderr.txt'
     $args = @('hunt', $evtx, '--mapping', $map, '-o', $out, '-r', $rules, '-s', $sigma, '--csv', '--skip-errors')
@@ -113,14 +116,7 @@ function chainsaw_the_village {
     Write-Host "Log hunting complete. Results + logs in: $out"
     Write-Host "Stdout: $stdout"
     Write-Host "Stderr: $stderr"
-
-}
-
-
-
-
-
-
+} 
 
 Function collect_files {
 
@@ -314,5 +310,6 @@ mkdir C:\Users\Public\4n6Duck
  Rip_n_zip
 
  Collection
+
 
 
