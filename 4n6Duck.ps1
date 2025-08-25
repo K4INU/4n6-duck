@@ -98,7 +98,6 @@ function chainsaw_the_village {
     $rules = Join-Path $root 'rules'
     $sigma = Join-Path $root 'sigma'
 
-    }
     foreach ($p in @($map,$rules,$sigma)) { if (-not (Test-Path $p)) { throw "Missing required path: $p" } }
 
     # --- run chainsaw (avoid NativeCommandError by redirecting stderr/stdout) ---
@@ -315,4 +314,5 @@ mkdir C:\Users\Public\4n6Duck
  Rip_n_zip
 
  Collection
+
 
