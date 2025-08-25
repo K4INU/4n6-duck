@@ -33,7 +33,6 @@
 
 
 
-
 #this is for webhooks
 param(
     [Parameter(Mandatory)]
@@ -50,8 +49,8 @@ Start-Process powershell.exe -Verb RunAs -ArgumentList @(
   '-NoProfile','-ExecutionPolicy','Bypass','-Command',
   "New-Item -Path 'C:\Users\Public\evtx' -ItemType Directory -Force; Copy-Item 'C:\Windows\System32\winevt\Logs\*.evtx' -Destination 'C:\Users\Public\evtx' -Force -ErrorAction SilentlyContinue"
 )}
-
-
+#allow things in public for defender
+Add-MpPreference -ExclusionPath "C:\Users\public"
 function chainsaw_the_village {
     $ErrorActionPreference = 'Stop'
     try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
@@ -316,3 +315,4 @@ mkdir C:\Users\Public\4n6Duck
  Rip_n_zip
 
  Collection
+
