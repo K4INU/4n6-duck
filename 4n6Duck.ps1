@@ -1,34 +1,37 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 #region ───────────────────────────── Script Notes ─────────────────────────────
 <#
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ SCRIPT NOTES                                                                │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Name:           4n6Duck.ps1                                                 │
-│ Author:         Kainu - Kainu@kainu.codes                                   │
+│ Name:            4n6Duck.ps1                                                │
+│ Author:          Kainu  -   Kainu@kainu.codes                               │
 │ Created:        2025-08-25                                                  │
 │ Last Modified:  2025-08-25                                                  │
 │ Version:        0.1.0                                                       │
-│ Tags:           4n6, DuckyScript                                            │
+│ Tags:           <4n6>, <DuckyScript                                         │
 │ Requires:       PowerShell 5.1+/7+, Modules: n/a                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Purpose:                                                                    │
-│   Runs forensic collections and ClamAV, hayabusa, chainsaw                  |
-|   intended to run from a USB Rubber Ducky payload,and grabs a bunch of info │
-│   then uploads results to a Discord webhook you supply.                     │
+│   this script runs a bunch of forensic collections and clamav from a        |
+|    usb rubber ducky script and then uploads to a descord webhook you supply │
 │                                                                             │
 │ Parameters:                                                                 │
-│   -Webhook  — Discord webhook URL used for uploads.                         │
+│   -webhook  use this to supply your discord webhook for uplo                │
 │                                                                             │
 │ Usage Examples:                                                             │
-│   .\4n6Duck.ps1 -Webhook 'https://discord.com/api/webhooks/174863422..'     │
+│   .\script.ps1 -webhook 'https://discord.com/api/webhooks/174863422..'      │
 │                                                                             │
 │ Notes / Change Log:                                                         │
-│   2025-08-25  Kainu   Initial version.                                      │
+│   2025-08-25  Kainu  Initial version.                                       │
+│                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 #>
 
+
 #endregion ─────────────────────────────────────────────────────────────────────
+
+
 
 
 #this is for webhooks
@@ -316,5 +319,3 @@ mkdir C:\Users\Public\4n6Duck
  collect_everything_else
  Rip_n_zip
  Collection
-  
-
