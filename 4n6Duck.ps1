@@ -30,18 +30,19 @@
 
 #endregion ─────────────────────────────────────────────────────────────────────
 
-  
-
 
 #this is for webhooks
 param(
     [Parameter(Mandatory)]
     [string]$webhook    # variable you use in the script
-) 
+)
 
- 
-  
- function Copy_evtx{
+
+
+
+
+
+function Copy_evtx{
 Start-Process powershell.exe -Verb RunAs -ArgumentList @(
   '-NoProfile','-ExecutionPolicy','Bypass','-Command',
   "New-Item -Path 'C:\Users\Public\evtx' -ItemType Directory -Force; Copy-Item 'C:\Windows\System32\winevt\Logs\*.evtx' -Destination 'C:\Users\Public\evtx' -Force -ErrorAction SilentlyContinue"
@@ -117,7 +118,9 @@ function chainsaw_the_village {
     Write-Host "Stderr: $stderr"
 
 }
- 
+
+
+
 
 
 
@@ -161,10 +164,10 @@ $PrefetchDir = Join-Path $OutputDir "prefetch"
 # Create directories
 New-Item -ItemType Directory -Path $PrefetchDir -Force | Out-Null
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
- 
 
- 
- # AutoRuns
+
+
+# AutoRuns
 $AutorunsExe = Join-Path $ToolsDir "autorunsc.exe"
 if (Test-Path $AutorunsExe) {
     Write-Output "Collecting AutoRuns..."
@@ -313,6 +316,5 @@ mkdir C:\Users\Public\4n6Duck
  collect_everything_else
  Rip_n_zip
  Collection
+  
 
-
- <# thats all folks #> 
