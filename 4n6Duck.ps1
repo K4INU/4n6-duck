@@ -13,7 +13,8 @@
 │ Requires:       PowerShell 5.1+/7+, Modules: n/a                            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Purpose:                                                                    │
-│   Runs forensic collections and ClamAV from a USB Rubber Ducky payload,     │
+│   Runs forensic collections and ClamAV, hayabusa, chainsaw                  |
+|   intended to run from a USB Rubber Ducky payload,and grabs a bunch of info │
 │   then uploads results to a Discord webhook you supply.                     │
 │                                                                             │
 │ Parameters:                                                                 │
@@ -27,29 +28,6 @@
 └─────────────────────────────────────────────────────────────────────────────┘
 #>
 
-<#
-.SYNOPSIS
-Forensic collection + ClamAV runner triggered by a Rubber Ducky payload; uploads artifacts to a supplied Discord webhook.
-
-.DESCRIPTION
-Collects common triage artifacts, runs ClamAV, and posts results to a Discord webhook.
-Intended for launch via USB Rubber Ducky (DuckyScript), but can run directly as well.
-
-.PARAMETER Webhook
-Discord webhook URL to receive uploads (e.g., https://discord.com/api/webhooks/...).
-
-.EXAMPLE
-.\4n6Duck.ps1 -Webhook 'https://discord.com/api/webhooks/174863422..'
-Runs the collection and sends results to the specified Discord webhook.
-
-.NOTES
-Author:        Kainu - Kainu@kainu.codes
-Created:       2025-08-25
-Last Modified: 2025-08-25
-Version:       0.1.0
-Tags:          4n6, DuckyScript
-Requires:      PowerShell 5.1+/7+, Modules: n/a
-#>
 #endregion ─────────────────────────────────────────────────────────────────────
 
   
