@@ -49,8 +49,19 @@ Start-Process powershell.exe -Verb RunAs -ArgumentList @(
   '-NoProfile','-ExecutionPolicy','Bypass','-Command',
   "New-Item -Path 'C:\Users\Public\evtx' -ItemType Directory -Force; Copy-Item 'C:\Windows\System32\winevt\Logs\*.evtx' -Destination 'C:\Users\Public\evtx' -Force -ErrorAction SilentlyContinue"
 )}
- # Run with elevation and add exclusion
-Start-Process powershell.exe -Verb RunAs -ArgumentList '-Command "Add-MpPreference -ExclusionPath ''C:\Users\Public''"'
+
+
+# Check if running as Administrator
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    # Relaunch PowerShell with elevation
+    Start-Process powershell.exe -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    exit
+}
+
+# Now we are elevated, add exclusions
+Add-MpPreference -ExclusionPath "C:\Users\Public"
+Add-MpPreference -ExclusionPath "$env:USERPROFILE\AppData\Local\Temp"
+
 
 function chainsaw_the_village {
     $ErrorActionPreference = 'Stop'
@@ -310,6 +321,7 @@ mkdir C:\Users\Public\4n6Duck
  Rip_n_zip
 
  Collection
+
 
 
 
