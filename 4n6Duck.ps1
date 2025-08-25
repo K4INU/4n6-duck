@@ -99,10 +99,6 @@ function chainsaw_the_village {
     $rules = Join-Path $root 'rules'
     $sigma = Join-Path $root 'sigma'
 
-    # --- quick sanity checks (common failure = no evtx files) ---
-    if (-not (Test-Path $evtx)) { throw "EVTX folder not found: $evtx" }
-    if (-not (Get-ChildItem -Path $evtx -Filter *.evtx -File -Recurse -ErrorAction SilentlyContinue)) {
-        throw "No .evtx files found under: $evtx"
     }
     foreach ($p in @($map,$rules,$sigma)) { if (-not (Test-Path $p)) { throw "Missing required path: $p" } }
 
@@ -318,4 +314,5 @@ mkdir C:\Users\Public\4n6Duck
  Hayabusa_speedy
  collect_everything_else
  Rip_n_zip
+
  Collection
