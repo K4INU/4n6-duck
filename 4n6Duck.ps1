@@ -14,7 +14,7 @@
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Purpose:                                                                    │
 │   Runs forensic collections and ClamAV from a USB Rubber Ducky payload,     │
-│   then uploads results to a Discord webhook you supply.                      │
+│   then uploads results to a Discord webhook you supply.                     │
 │                                                                             │
 │ Parameters:                                                                 │
 │   -Webhook  — Discord webhook URL used for uploads.                         │
